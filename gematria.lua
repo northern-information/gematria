@@ -81,6 +81,11 @@ end
 
 lattice = require("lattice")
 sequins = require("sequins")
+
+save_load = include("lib/save_load")
+textentry = require "textentry"
+fileselect = require "fileselect"
+
 gematria = {}
 
 function init()
@@ -101,6 +106,12 @@ function init()
   gematria.lattice = lattice:new()
   for i = 1, 4 do init_output(i) end
   crow_report()
+
+  save_load.init()
+  if params:get("autosave") == 2 then
+    save_load.load_gematria_data(folder_path.."autosave.gmt")
+  end  
+
   gematria.lattice:start()
   README()
 end
@@ -431,3 +442,10 @@ function crow_report()
     crow_status = crow_disconnected
   end
 end
+
+function cleanup()
+  if params:get("autosave") == 2 then
+    save_load.save_gematria_data("autosave")
+  end
+end
+
