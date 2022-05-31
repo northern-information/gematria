@@ -260,7 +260,7 @@ function redraw()
     draw_step_at(gematria[output]["now"], matrix_x, y + 1)
     draw_table_to_row_at(gematria[output], matrix_x, y + 1)
   end
-  draw_target_corner()
+  draw_target_line()
   screen.move(0, 44)
   screen.move(1, 50)
   screen.text("crow")
@@ -310,7 +310,7 @@ function draw_reticle(x,y,screen_level)
   screen.update()
 end
 
-function draw_target_corner()
+function draw_target_line()
   local x = matrix_x + ((target_x - 1) * cell_w)
   local y = (target_y * (cell_h)) - cell_h
   screen.level(15)
