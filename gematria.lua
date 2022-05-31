@@ -250,6 +250,7 @@ end
 function redraw()
   screen.clear()
   screen.level(15)
+  draw_reticle()
   for i = 0, 3  do
     local output = "o" .. i + 1
     local y = 5 + (i * cell_h)
@@ -257,10 +258,9 @@ function redraw()
     screen.text(output)
     screen.move(32, y + 1)
     screen.text(gematria[output]["division"])
-    draw_step_at(gematria[output]["now"], matrix_x, y + 1)
     draw_table_to_row_at(gematria[output], matrix_x, y + 1)
+    draw_step_at(gematria[output]["now"], matrix_x, y + 1)
   end
-  draw_target_corner()
   screen.move(0, 44)
   screen.move(1, 50)
   screen.text("crow")
@@ -302,31 +302,23 @@ function draw_fallen_timer()
   screen.fill()
 end
 
-function draw_reticle(x,y,screen_level)
+function draw_reticle()
   local adjust_x, adjust_y = -2, -4
-  screen.level(screen_level)
-  screen.rect(x - 1, y, cell_w + adjust_x, cell_h + adjust_y)
-  screen.fill()
-  screen.update()
-end
-
-function draw_target_corner()
   local x = matrix_x + ((target_x - 1) * cell_w)
   local y = (target_y * (cell_h)) - cell_h
   screen.level(15)
-  screen.move(x-1,y)
-  screen.line(x-1,y+8)
+  screen.rect(x - 1, y, cell_w + adjust_x, cell_h + adjust_y)
+  screen.fill()
 end
 
 function draw_table_to_row_at(output, x, y)
   local iteration = 0
   local t_x, t_y = get_x_and_y()
   for k, v in pairs(output["cipher"]) do
-    draw_reticle(x + (iteration * cell_w),y-6,v)
-    screen.level(v>7 and 2 or 14)
-    -- if output.id == t_y and t_x == (iteration + 1) then
-    --   screen.level(5)
-    -- end
+    screen.level(15)
+    if output.id == t_y and t_x == (iteration + 1) then
+      screen.level(0)
+    end
     screen.move(x + (iteration * cell_w), y)
     screen.text(int_to_hex(v))
     iteration = iteration + 1
